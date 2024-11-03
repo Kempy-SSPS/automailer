@@ -9,4 +9,5 @@ def main():
         email = build_email(new_reponse)
         send_email(email)
         
-        
+if __name__ == "__main__":
+    main()
