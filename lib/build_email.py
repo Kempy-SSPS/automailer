@@ -26,14 +26,14 @@ def get_nonfull_events_by_type(event_type, remaining_places=get_remaining_places
     return nonfull_events
 
 def build_sub_alternatives(event_type):
-    alternatives_text = "Pokud máte zájem, můžete si změnit termín na jeden z následujících volných:\n"
+    
+    alternatives = []
     nonfull_events = get_nonfull_events_by_type(event_type)
     if len(nonfull_events) == 0:
-        return ""
+        return None
     for event_name in nonfull_events.keys():
-        alternatives_text += f"- {event_name}\n"
-    alternatives_text += "\nPokud Vám některý z těchto termínů vyhovuje, prosím odpovězte na tento e-mail."
-    return alternatives_text
+        alternatives.append(event_name)
+    return alternatives
     
         
 
