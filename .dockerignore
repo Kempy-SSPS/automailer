@@ -1,0 +1,11 @@
+venv/
+venv/*
+.env
+README.md
+Dockerfile
+docker-compose.yaml
+
+data/
+data/*
+config/
+config/*

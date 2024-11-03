@@ -1,0 +1,12 @@
+services:
+  automailer:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ".env"
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    ports:
+      - 8000:8000
