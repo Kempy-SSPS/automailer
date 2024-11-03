@@ -1,12 +1,15 @@
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
 from automailer import main as automail
+from time import sleep
 
 app = Flask(__name__)
 
 
 @app.route('/automail', methods=['POST'])
-def run_endpoint():
+def automail_endpoint():
+    print("Got reqest from form, fetching responses... ")
+    sleep(10)
     automail()
     return "Endpoint hit, automailing", 200
 
