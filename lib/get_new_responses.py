@@ -32,6 +32,17 @@ def simplify_response(response):
     }
     return simplified_response
 
+def get_purpose_indecies():
+    purpose_indecies = {}
+    with open("config/templates/form_template.json", "r") as f:
+        form_template = json.loads(f.read())
+    for index, question in enumerate(form_template["questions"]):
+        if "purpose" not in question:
+            continue
+        purpose_indecies[question["purpose"]] = index
+    return purpose_indecies
+
+
 
 def main():
     creds = Credentials.from_service_account_file(
@@ -43,15 +54,16 @@ def main():
 
     current_responses = safe_file_get('./data/responses.json', [])
     current_event_data = safe_file_get('./data/event_data.json', {})
+    purpose_indecies = get_purpose_indecies()
     EVENTS = get_events()
     new_responses = []
     for raw_response in all_responses:
         if raw_response == []:
             continue
         response = {
-            "event_name": raw_response[0].split("(")[0].strip(),
-            "participant_email": raw_response[2],
-            "parent_email": safe_get_index(raw_response, 4),
+            "event_name": raw_response[purpose_indecies["event_name"]].split("(")[0].strip(),
+            "participant_email": raw_response[purpose_indecies["participant_email"]],
+            "parent_email": raw_response[purpose_indecies["parent_email"]],
             "day_before_notified": False
         }
         is_continue = False

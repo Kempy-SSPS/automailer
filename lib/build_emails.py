@@ -62,5 +62,9 @@ def build_email(response):
                 event_date=EVENTS[event_name]["event_date"]
             )
         }
-        
-    return email
+    emails = []
+    emails.append(email)
+    parental_email = email
+    parental_email["recipient_address"] = response["parent_email"]
+    emails.append(parental_email)
+    return emails
