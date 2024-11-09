@@ -49,7 +49,7 @@ def main():
         if raw_response == []:
             continue
         response = {
-            "event_name": raw_response[0],
+            "event_name": raw_response[0].split("(")[0].strip(),
             "participant_email": raw_response[2],
             "parent_email": safe_get_index(raw_response, 4),
             "day_before_notified": False

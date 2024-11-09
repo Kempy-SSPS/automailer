@@ -37,7 +37,6 @@ def get_sorted_events():
 
 
 
-    print(event_options)
     return event_options
         
 
@@ -66,6 +65,5 @@ def build_update_form_config():
             "options": get_sorted_events(),
         }
     }
-    print(update_form_config)
     return update_form_config
 
