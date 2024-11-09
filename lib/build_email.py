@@ -1,5 +1,5 @@
 from jinja2 import Template
-from config.templates.templates import templates
+from config.templates.email_templates import templates
 from lib.utils.get_events import get_events
 from lib.utils.safe_file_get import safe_file_get
 

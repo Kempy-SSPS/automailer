@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
 from lib.utils.get_events import get_events
 from lib.utils.safe_file_get import safe_file_get
+from lib.form.update.update_form import main as update_form
 
 if not os.path.exists('/.dockerenv'):
     from dotenv import load_dotenv
@@ -74,6 +75,7 @@ def main():
 
     with open('./data/responses.json', 'w') as file:
         file.write(json.dumps(current_responses + new_responses, indent=4))
+    update_form()
 
     return(new_responses)
 

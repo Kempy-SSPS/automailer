@@ -3,8 +3,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from automailer import main as automail
 from time import sleep
 
+automail()
 app = Flask(__name__)
-
 
 @app.route('/automail', methods=['POST'])
 def automail_endpoint():

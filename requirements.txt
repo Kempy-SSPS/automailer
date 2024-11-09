@@ -7,3 +7,4 @@ jinja2
 Flask
 APScheduler
 gunicorn
+google-auth
