@@ -64,7 +64,7 @@ def build_email(response):
         }
     emails = []
     emails.append(email)
-    parental_email = email
+    parental_email = email.copy()
     parental_email["recipient_address"] = response["parent_email"]
     emails.append(parental_email)
     return emails
