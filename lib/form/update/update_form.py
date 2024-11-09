@@ -41,7 +41,7 @@ def get_form_item(service, form_id, item_index):
     try:
         form = service.forms().get(formId=form_id).execute()
         if 'items' not in form or item_index >= len(form['items']):
-            raise ValueError(f"No question found at index {item_index}")
+            raise ValueError(f"No question found at index {item_index}, ensure the form has been created and has enough questions")
         return form['items'][item_index]
     except Exception as e:
         print(f"Error getting form item: {str(e)}")

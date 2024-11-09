@@ -17,7 +17,7 @@ FORM_ID = os.environ.get("FORM_ID")
 CREDENTIALS_PATH = 'config/credentials.json'
 TEMPLATE_PATH = "config/templates/form_template.json"
 with open(TEMPLATE_PATH, "r") as f:
-    FROM_TEMPLATE = json.loads(f.read())
+    FORM_TEMPLATE = json.loads(f.read())
 
 
 SCOPES = [
@@ -126,7 +126,7 @@ def update_form(form_id, form_config):
         
         # Update form title and description
         update_form_title(service, form_id, form_config['title'], form_config['description'])
-        
+
         # Create new questions
         requests = [
             create_question(question, index) 
@@ -144,12 +144,13 @@ def update_form(form_id, form_config):
         return False
 
 def main():
-
-    success = update_form(FORM_ID, FROM_TEMPLATE)
+    success = update_form(FORM_ID, FORM_TEMPLATE)
     if success:
         print("Form created successfully!")
+        return True
     else:
         print("Failed to update form. Check the error messages above.")
+        return False
 
 if __name__ == "__main__":
     main()
