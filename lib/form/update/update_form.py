@@ -1,7 +1,7 @@
 import os
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from lib.form.update.build_update_form_config import build_update_form_config
+from lib.form.update.build_update_form_config import build_update_form_configs
 
 if not os.path.exists('/.dockerenv'):
     from dotenv import load_dotenv
@@ -122,22 +122,23 @@ def validate_question_type(existing_item, new_question_data):
 
 def main():
     
-    config = build_update_form_config()
-    question_index = config.get('index')
-    question_data = config.get('question')
+    configs = build_update_form_configs()
+    for config in configs:
+        question_index = config.get('index')
+        question_data = config.get('question')
 
-    if question_index is None or question_data is None:
-        raise ValueError("Configuration must include 'index' and 'question' fields")
+        if question_index is None or question_data is None:
+            raise ValueError("Configuration must include 'index' and 'question' fields")
 
-    service = get_service()
+        service = get_service()
 
-    # Get existing question to validate type
-    existing_item = get_form_item(service, FORM_ID, question_index)
-    validate_question_type(existing_item, question_data)
+        # Get existing question to validate type
+        existing_item = get_form_item(service, FORM_ID, question_index)
+        validate_question_type(existing_item, question_data)
 
-    # Update the question
-    update_question_in_place(service, FORM_ID, question_index, question_data)
-    print(f"Successfully updated question at index {question_index}")
+        # Update the question
+        update_question_in_place(service, FORM_ID, question_index, question_data)
+        print(f"Successfully updated question at index {question_index}")
 
 
 if __name__ == "__main__":

@@ -39,29 +39,30 @@ def build_sub_alternatives(event_type):
 
 
 def build_email(response):
-    event_name = response["event_name"]
-    if response["is_sub"]:
-        event_type = EVENTS[event_name]["event_type"]
-        email = {
-            "recipient_address" : response["participant_email"],
-            "subject": Template(templates["sub"]["subject"]).render(event_name=event_name),
-            "body": Template(templates["sub"]["body"]).render(
-                event_name=event_name,
-                event_type=event_type,
-                event_date=EVENTS[event_name]["event_date"],
-                sub_alternatives=build_sub_alternatives(event_type)
-            )
-        }
-    else: 
-        email = {
-            "recipient_address" : response["participant_email"],
-            "subject": Template(templates["participant"]["subject"]).render(event_name=event_name),
-            "body": Template(templates["participant"]["body"]).render(
-                event_name=event_name,
-                event_type=EVENTS[event_name]["event_type"],
-                event_date=EVENTS[event_name]["event_date"]
-            )
-        }
+    # event_name = response["response_events"]
+    
+    # if response["is_sub"]:
+
+    email = {
+        "recipient_address" : response["participant_email"],
+        "subject": "Potvrzení přihlášky",
+        "body": Template(templates["participant"]["body"]).render(
+            response=response,
+            # event_type=event_type,
+            # event_date=EVENTS[event_name]["event_date"],
+            # sub_alternatives=build_sub_alternatives(event_type)
+        )
+    }
+    # else: 
+    #     email = {
+    #         "recipient_address" : response["participant_email"],
+    #         "subject": Template(templates["participant"]["subject"]).render(event_name=event_name),
+    #         "body": Template(templates["participant"]["body"]).render(
+    #             event_name=event_name,
+    #             event_type=EVENTS[event_name]["event_type"],
+    #             event_date=EVENTS[event_name]["event_date"]
+    #         )
+    #     }
     emails = []
     emails.append(email)
     parental_email = email.copy()

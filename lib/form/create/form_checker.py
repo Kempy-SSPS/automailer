@@ -7,7 +7,7 @@ from lib.utils.safe_file_get import safe_file_get
 from lib.utils.write_as_json import write_as_json
 
 def form_checker():
-    time.sleep(5)
+    time.sleep(2)
 
     # Determine the base directory of the script
     base_dir = os.getcwd()
@@ -32,4 +32,4 @@ def form_checker():
         write_as_json(data_file, form_data)
         print("Form created and form_data.json updated.")
 
-    time.sleep(10)
+    time.sleep(5)
