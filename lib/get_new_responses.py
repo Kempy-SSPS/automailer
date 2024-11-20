@@ -25,6 +25,10 @@ def safe_get_index(array, index):
         return None
 
 def simplify_response(response):
+    for response_event in response["response_events"]:
+        if "is_sub" not in response_event:
+            continue
+        del response_event["is_sub"]
     simplified_response = {
         "response_events": response["response_events"],
         "participant_email": response["participant_email"],
@@ -62,25 +66,8 @@ def get_event_names(raw_response):
     return event_names
 
 
-# def determine_sub(event_name):
-#     is_sub: bool
-#     current_event_data = safe_file_get('./data/event_data.json', {})
-#     EVENTS = get_events()
-#     requested_event_data = current_event_data.get(
-#     event_name, {"signed_up": 0, "subs": 0})
-#     requested_event_full = requested_event_data["signed_up"] >= EVENTS[event_name]["capacity"]
-#     is_sub = requested_event_full
-#     if requested_event_full:
-#         requested_event_data["subs"] += 1
-#     else:
-#         requested_event_data["signed_up"] += 1
-#     current_event_data[event_name] = requested_event_data
-#     with open('./data/event_data.json', 'w') as file:
-#         file.write(json.dumps(current_event_data, indent=4))
-#     return is_sub
 
-
-def determine_sub(event_name):
+def determine_sub(event_name, soft):
     is_sub: bool
     current_event_data = safe_file_get('./data/event_data.json', {})
     EVENTS = get_events()
@@ -96,18 +83,20 @@ def determine_sub(event_name):
     else:
         requested_event_data["signed_up"] += 1
     current_event_data[event_name] = requested_event_data
-    with open('./data/event_data.json', 'w') as file:
-        file.write(json.dumps(current_event_data, indent=4))
+    if not soft:
+        print("WROTE")
+        with open('./data/event_data.json', 'w') as file:
+            file.write(json.dumps(current_event_data, indent=4))
     return is_sub
 
 
-def get_response_events(event_names):
+def get_response_events(event_names, soft):
     response_events = []
     for event_name in event_names:
         response_events.append(
             {
                 "event_name": event_name,
-                "is_sub": determine_sub(event_name),
+                "is_sub": determine_sub(event_name, soft),
             }
         )
 
@@ -134,7 +123,7 @@ def main():
         if raw_response == []:
             continue
         response = {
-            "response_events": get_response_events(get_event_names(raw_response)),
+            "response_events": get_response_events(get_event_names(raw_response), True),
             "participant_email": raw_response[purpose_indecies["participant_email"]],
             "parent_email": raw_response[purpose_indecies["parent_email"]],
         }
@@ -144,10 +133,11 @@ def main():
                 is_continue = True
         if is_continue:
             continue
+        get_response_events(get_event_names(raw_response), False),
         for single_event_name in response["response_events"]:
             singlefied_response = response.copy()
             singlefied_response["response_events"] = single_event_name
-            singlefied_response["is_sub"] = determine_sub(single_event_name)
+            # singlefied_response["is_sub"] = determine_sub(single_event_name)
             # requested_event_data = current_event_data.get(
             #     singlefied_response['event_name'], {"signed_up": 0, "subs": 0})
             # requested_event_full = requested_event_data["signed_up"] >= EVENTS[singlefied_response['event_name']]["capacity"]
