@@ -62,7 +62,6 @@ def get_event_names(raw_response):
     #     if camp_name not in raw_response:
     #         continue
     #     event_names.append(raw_response[camp_name])
-    print(f"got event name: {event_names}")
     return event_names
 
 
@@ -84,7 +83,6 @@ def determine_sub(event_name, soft):
         requested_event_data["signed_up"] += 1
     current_event_data[event_name] = requested_event_data
     if not soft:
-        print("WROTE")
         with open('./data/event_data.json', 'w') as file:
             file.write(json.dumps(current_event_data, indent=4))
     return is_sub
@@ -111,9 +109,7 @@ def main():
     sheet = service.spreadsheets()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
     all_responses = result.get('values', [])
-    for response in all_responses:
-        print(response)
-
+    
     current_responses = safe_file_get('./data/responses.json', [])
     # current_event_data = safe_file_get('./data/event_data.json', {})
     purpose_indecies = get_purpose_indecies()
