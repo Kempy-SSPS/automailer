@@ -42,6 +42,8 @@ def build_email(response):
     # event_name = response["response_events"]
     
     # if response["is_sub"]:
+    if response["response_events"] == []:
+        return []
 
     email = {
         "recipient_address" : response["participant_email"],

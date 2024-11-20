@@ -2,6 +2,7 @@ import smtplib
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from datetime import datetime
 
 
 if not os.path.exists('/.dockerenv'):
@@ -23,6 +24,14 @@ SENDER_EMAIL=os.environ.get("SENDER_EMAIL")
 
 
 def send_email(email):
+
+    base_dir = os.getcwd()
+    # data_file = os.path.join(base_dir, 'data', 'form_data.json')
+    with open(f"{base_dir}/data/mail_log.txt", "a") as f:
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        f.write(f"{timestamp} - Sending email to {email['recipient_address']}\n```{email['body']}```\n\n")
+
+
     subject = email["subject"]
     body = email["body"]
     recipient_email = email["recipient_address"]
